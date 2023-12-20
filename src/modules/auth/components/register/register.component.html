@@ -1,1 +1,33 @@
-<p>register works!</p>
+<div class="register-form-container">
+  <form [formGroup]="formData" (ngSubmit)="submit()">
+    <h2>Создание учетной записи</h2>
+    <div class="input-container">
+      <p>Имя пользователя</p>
+      <input [ngClass]="{input: true, error: userName?.invalid && userName?.touched}" placeholder="Введите имя пользователя" formControlName="userName">
+      <div *ngIf="userName?.invalid && userName?.touched">
+        <p class="error" *ngIf="userName?.hasError('required')">Поле является обязательным</p>
+        <p class="error" *ngIf="userName?.hasError('pattern')">Неверный формат имени</p>
+        <p class="error" *ngIf="userName?.hasError('maxLength')">Максимальная длина 150 символов</p>
+        <p class="error" *ngIf="userName?.hasError('username')">Данное имя пользователя уже занято, попробуйте другое</p>
+      </div>
+    </div>
+    <div class="input-container">
+      <p>Пароль</p>
+      <input [ngClass]="{input: true, error: (password?.invalid || formData.hasError('passwordNotMatch')) && password?.touched }" placeholder="Введите пароль" formControlName="password">
+      <div *ngIf="(password?.invalid || formData.hasError('passwordNotMatch')) && password?.touched">
+        <p class="error" *ngIf="password?.hasError('required')">Поле является обязательным</p>
+        <p class="error" *ngIf="formData.hasError('passwordNotMatch')">Пароли не совпадают</p>
+      </div>
+    </div>
+    <div class="input-container">
+      <p>Повторите пароль</p>
+      <input [ngClass]="{input: true, error: (confirmPassword?.invalid || formData.hasError('passwordNotMatch')) &&  confirmPassword?.touched }" placeholder="Повторите пароль" formControlName="confirmPassword">
+      <div *ngIf="(confirmPassword?.invalid || formData.hasError('passwordNotMatch')) &&  confirmPassword?.touched">
+        <p class="error" *ngIf="confirmPassword?.hasError('required')">Поле является обязательным</p>
+        <p class="error" *ngIf="formData.hasError('passwordNotMatch')">Пароли не совпадают</p>
+      </div>
+    </div>
+    <button class="register" type="submit">Регистрация</button>
+    <a class="link" [routerLink]="['/auth/login']">У меня уже есть аккаунт</a>
+  </form>
+</div>
