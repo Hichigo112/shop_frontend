@@ -1,0 +1,29 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.main-links {
+  display: flex;
+  column-gap: 20px;
+}
+
+.other-links {
+  display: flex;
+  align-items: center;
+  column-gap: 20px;
+}
+
+.link {
+  text-decoration: none;
+  font-size: 17px;
+  color: black;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.link-active {
+  color: blue;
+}

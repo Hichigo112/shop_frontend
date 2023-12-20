@@ -1,2 +1,13 @@
-<p>navigation cap!</p>
+<nav class="nav">
+  <div class="main-links">
+    <a class="link" routerLink="products" routerLinkActive="link-active">Главная</a>
+    <a class="link" routerLink="clients" routerLinkActive="link-active">Клиенты</a>
+    <a class="link" routerLink="brands" routerLinkActive="link-active">Бренды</a>
+    <a class="link" routerLink="orders" routerLinkActive="link-active">Заказы</a>
+  </div>
+  <div class="other-links">
+    <button (click)="logout()">Выход</button>
+    <img routerLink="cart" ngSrc="assets/icons/cart.svg" height="30" width="30" alt="">
+  </div>
+</nav>
 <router-outlet></router-outlet>
