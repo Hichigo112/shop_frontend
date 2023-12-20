@@ -18,4 +18,8 @@ export class AuthService {
   loginToken(userData: ShortUserDto): Observable<UserToken> {
     return this.http.post<UserToken>(`${DEV_URL}auth/token/login/`, userData)
   }
+
+  logoutToken(): Observable<any> {
+    return this.http.post(`${DEV_URL}auth/token/logout/`, {})
+  }
 }
