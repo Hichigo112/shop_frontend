@@ -47,7 +47,12 @@ export class LoginComponent implements OnDestroy{
       ).subscribe(res => {
         if (res.auth_token) {
           localStorage.setItem('token', res.auth_token)
-          this.router.navigate(['products'])
+          this.authService.getUserInfo().pipe(
+            takeUntil(this.destroy$)
+          ).subscribe(res => {
+            this.authService.setUserInfo(res)
+            this.router.navigate(['products'], {queryParams: {page: '1'}})
+          })
         }
       })
     }
@@ -63,6 +68,7 @@ export class LoginComponent implements OnDestroy{
 
   ngOnDestroy(): void {
     this.destroy$.next(true)
+    this.destroy$.unsubscribe()
   }
 
 }

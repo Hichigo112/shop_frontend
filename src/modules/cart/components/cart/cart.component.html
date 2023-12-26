@@ -1,1 +1,15 @@
-<p>cart works!</p>
+<div class="cart-container">
+  <ng-container *ngFor="let productItem of (cartItems | async)">
+    <app-product-item
+      [product]="productItem.product"
+      [isCart]="true"
+      [quantity]="productItem.quantity"
+      [cartIdDataBase]="productItem.id"
+      (deleteFromCart)="onDeleteCartItem($event)"
+    ></app-product-item>
+  </ng-container>
+</div>
+<app-pagination [count]="count" [next]="next" [previous]="previous" *ngIf="(cartItems.getValue().length)"></app-pagination>
+<div *ngIf="cartMessage">
+  <h1>{{cartMessage}}</h1>
+</div>
