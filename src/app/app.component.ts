@@ -3,12 +3,11 @@ import { CommonModule } from '@angular/common';
 import {RouterOutlet} from '@angular/router';
 import {AuthService} from "../modules/auth/services/auth.service";
 import {Subscription} from "rxjs";
-import {ModalComponent} from "../modules/shared/components/modal/modal.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, ModalComponent],
+  imports: [CommonModule, RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
