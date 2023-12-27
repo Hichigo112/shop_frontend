@@ -38,6 +38,7 @@ export class BrandsModalFormComponent implements OnInit{
   title = ''
   form!: FormGroup
 
+
   constructor(private fb: FormBuilder,private dialogRef: MatDialogRef<BrandsModalFormComponent>,
               @Inject(MAT_DIALOG_DATA) data: {
                 title: string,

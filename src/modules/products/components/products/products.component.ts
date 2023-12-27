@@ -7,7 +7,6 @@ import {catchError, of, Subject, takeUntil} from "rxjs";
 import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
 import {PaginationComponent} from "../../../shared/components/pagination/pagination.component";
 import {SearchComponent} from "../../../shared/components/search/search.component";
-import {ModalComponent} from "../../../shared/components/modal/modal.component";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {ProductModalFormComponent} from "../product-modal-form/modal-form.component";
 import {AuthService} from "../../../auth/services/auth.service";
@@ -23,7 +22,6 @@ import {searchArray} from "../../../../constants/searchsArray.constant";
     AsyncPipe,
     PaginationComponent,
     SearchComponent,
-    ModalComponent,
     MatButtonModule,
     NgIf
   ],
