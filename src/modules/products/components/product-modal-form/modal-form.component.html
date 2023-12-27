@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>{{title}}</h2>
+
+<mat-dialog-content [formGroup]="form">
+
+  <mat-form-field>
+    <input matInput
+           placeholder="Введите название продукта"
+           formControlName="name">
+    <mat-error *ngIf="form.get('name')?.hasError('required')">Это поле обязательное</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput
+           placeholder="Введите название продукта для 1С"
+           formControlName="name_from_1c">
+    <mat-error *ngIf="form.get('name_from_1c')?.hasError('required')">Это поле обязательное</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput
+           placeholder="Введите цену"
+           formControlName="price">
+    <mat-error *ngIf="form.get('price')?.hasError('required')">Это поле обязательное</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput
+           placeholder="Введите количество"
+           formControlName="volume">
+    <mat-error *ngIf="form.get('volume')?.hasError('required')">Это поле обязательное</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput
+           placeholder="Введите описание"
+           formControlName="description">
+    <mat-error *ngIf="form.get('description')?.hasError('required')">Это поле обязательное</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select formControlName="brand" placeholder="Добавьте бренд">
+      <ng-container *ngFor="let brandData of allBrands">
+        <mat-option [value]="brandData.id">{{brandData.name}}</mat-option>
+      </ng-container>
+    </mat-select>
+    <mat-error *ngIf="form.get('brand')?.hasError('required')">Это поле обязательное</mat-error>
+  </mat-form-field>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="save()">Сохранить</button>
+  <button mat-raised-button color="accent" (click)="close()">Отмена</button>
+</mat-dialog-actions>

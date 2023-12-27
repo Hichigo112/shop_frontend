@@ -6,7 +6,10 @@
     <a class="link" routerLink="orders" routerLinkActive="link-active">Заказы</a>
   </div>
   <div class="other-links">
-    <button (click)="logout()">Выход</button>
+    <button *ngIf="isAuthUser; else login" (click)="logout()" mat-raised-button color="accent">Выход</button>
+    <ng-template #login>
+      <button (click)="loginPage()" mat-raised-button color="accent">Вход</button>
+    </ng-template>
     <img routerLink="cart" ngSrc="assets/icons/cart.svg" height="30" width="30" alt="">
   </div>
 </nav>

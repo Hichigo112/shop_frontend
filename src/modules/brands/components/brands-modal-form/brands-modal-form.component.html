@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>{{title}}</h2>
+
+<mat-dialog-content [formGroup]="form">
+  <mat-form-field>
+    <input matInput
+           placeholder="Введите название бренда"
+           formControlName="name">
+    <mat-error *ngIf="form.get('name')?.hasError('required')">Это поле обязательное</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput
+           placeholder="Введите название картинки"
+           formControlName="icon">
+    <mat-error *ngIf="form.get('icon')?.hasError('required')">Это поле обязательное</mat-error>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="save()">Сохранить</button>
+  <button mat-raised-button color="accent"  (click)="close()">Закрыть</button>
+</mat-dialog-actions>

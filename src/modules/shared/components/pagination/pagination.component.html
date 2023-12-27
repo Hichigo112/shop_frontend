@@ -1,0 +1,14 @@
+<div class="pagination-container">
+  <ul class="list-links">
+    <ng-container *ngFor="let item of visibleData">
+      <li class="link-item"
+          (click)="updateValue(item)"
+          routerLink="./"
+          routerLinkActive="link-item-active"
+          [queryParams]="{page: item}"
+          [queryParamsHandling]="queryParamsHandling"
+      >
+        <a class="link">{{item}}</a></li>
+    </ng-container>
+  </ul>
+</div>
