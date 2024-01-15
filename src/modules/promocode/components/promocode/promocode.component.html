@@ -1,1 +1,44 @@
-<p>promocode works!</p>
+<button class="add-button" mat-raised-button color="primary" (click)="create()">Добавить промокод</button>
+<div class="table-container">
+  <table mat-table [dataSource]="promocodeArray">
+    <ng-container matColumnDef="Название">
+      <th mat-header-cell *matHeaderCellDef>Название</th>
+      <td mat-cell *matCellDef="let element">{{element.code}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Скидка в %">
+      <th mat-header-cell *matHeaderCellDef>Скидка в %</th>
+      <td mat-cell *matCellDef="let element">{{element.discount}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Тип">
+      <th mat-header-cell *matHeaderCellDef>Тип</th>
+      <td mat-cell *matCellDef="let element">{{element.type}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Статус">
+      <th mat-header-cell *matHeaderCellDef>Статус</th>
+      <td mat-cell *matCellDef="let element">{{element.is_active | toText : 'Активен' : 'Приостановлен'}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Изменить">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-raised-button color="primary" (click)="change(element)">Изменить</button>
+      </td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="Удалить">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <button (click)="delete(element.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>

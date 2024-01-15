@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogActions,
@@ -12,6 +12,9 @@ import {MatButtonModule} from "@angular/material/button";
 import {defaultBrands} from "../../../../constants/brand.constant";
 import {MatSelectModule} from "@angular/material/select";
 import {NgForOf, NgIf} from "@angular/common";
+import {ProductsService} from "../../services/products.service";
+import {Subject, takeUntil} from "rxjs";
+import {MatSnackBar, MatSnackBarConfig} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-product-modal-form',
@@ -30,24 +33,30 @@ import {NgForOf, NgIf} from "@angular/common";
   templateUrl: './modal-form.component.html',
   styleUrl: './modal-form.component.scss'
 })
-export class ProductModalFormComponent implements OnInit{
+export class ProductModalFormComponent implements OnInit, OnDestroy{
 
   form!: FormGroup;
   title:string;
   allBrands = defaultBrands
+  defaultSnackBarValue: MatSnackBarConfig = {
+    horizontalPosition: "end",
+    verticalPosition: "bottom",
+    duration: 3000
+  }
+  destroy$ = new Subject<boolean>()
 
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<ProductModalFormComponent>,
-    @Inject(MAT_DIALOG_DATA) data: {
+    @Inject(MAT_DIALOG_DATA) private data: {
       title: string,
-    }) {
+    }, private productsService: ProductsService, private _snackBar: MatSnackBar) {
 
-    this.title = data.title;
+    this.title = this.data.title;
 
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.form = this.fb.group({
       name: ['', [Validators.required]],
       name_from_1c: ['', [Validators.required]],
@@ -60,12 +69,29 @@ export class ProductModalFormComponent implements OnInit{
 
   save() {
     if (this.form.valid) {
-      this.dialogRef.close(this.form.value);
+      const productData = {
+        ...this.form.value,
+        is_ready: true,
+        is_retail_allowed: true
+      }
+      this._snackBar.open('Отправили изменения на сервер', '', this.defaultSnackBarValue)
+      this.productsService.createProduct(productData).pipe(
+        takeUntil(this.destroy$)
+      ).subscribe(() => {
+        this._snackBar.open('Продукт добавлен', '', this.defaultSnackBarValue)
+        this.dialogRef.close(true);
+      })
+
     }
   }
 
-  close() {
-    this.dialogRef.close();
+  close(): void {
+    this.dialogRef.close(false);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(true)
+    this.destroy$.unsubscribe()
   }
 
 }

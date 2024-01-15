@@ -1,5 +1,28 @@
 .cart-container {
   display: flex;
+  justify-content: space-around;
+}
+
+.product-wrapper {
+  display: flex;
   flex-direction: column;
+  justify-content: space-between;
   row-gap: 30px;
+}
+
+.offer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 250px;
+  height: 150px;
+  background-color: lightgray;
+  border-radius: 10px;
+  p {
+    text-align: center;
+  }
+  button {
+    width: 95%;
+  }
 }

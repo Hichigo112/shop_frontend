@@ -19,4 +19,12 @@ export class BrandService {
   createBrand(brand: Omit<BrandDto, 'id'>): Observable<void> {
     return this.http.post<void>(`${DEV_URL}brands/`, brand)
   }
+
+  updateBrand(brand: Omit<BrandDto, 'id'>, id: string): Observable<void> {
+    return this.http.patch<void>(`${DEV_URL}brands/${id}/`, brand)
+  }
+
+  deleteBrand(id: string): Observable<void> {
+    return this.http.delete<void>(`${DEV_URL}brands/${id}/`)
+  }
 }

@@ -1,17 +1,18 @@
 import { Component, OnDestroy, OnInit} from '@angular/core';
 import {ProductItemComponent} from "../product-item/product-item.component";
-import {ProductsService} from "../../services/products.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {ProductsDto, ProductsParams} from "../../../../dto/products.dto";
 import {catchError, of, Subject, takeUntil} from "rxjs";
 import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
-import {PaginationComponent} from "../../../shared/components/pagination/pagination.component";
-import {SearchComponent} from "../../../shared/components/search/search.component";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {ProductModalFormComponent} from "../product-modal-form/modal-form.component";
 import {AuthService} from "../../../auth/services/auth.service";
 import {MatButtonModule} from "@angular/material/button";
-import {searchArray} from "../../../../constants/searchsArray.constant";
+import {PaginationComponent} from "../../../shared/components/pagination/pagination.component";
+import {SearchComponent} from "../../../shared/components/search/search.component";
+import {ProductsDto, ProductsParams} from "../../../../dto/products.dto";
+import {ProductsService} from "../../services/products.service";
+import { searchArray } from '../../../../constants/searchsArray.constant';
+
 
 @Component({
   selector: 'app-products',
@@ -83,25 +84,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
     };
     dialogConfig.width = '400px'
     dialogConfig.height = '700px'
+    this.dialog.open(ProductModalFormComponent, dialogConfig);
 
-
-    const dialogRef = this.dialog.open(ProductModalFormComponent, dialogConfig);
-
-    dialogRef.afterClosed().pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(data => {
-      if (data) {
-        const productData = {
-          ...data,
-          is_ready: true,
-          is_retail_allowed: true
-        }
-
-        this.productsService.createProduct(productData).pipe(
-          takeUntil(this.destroy$)
-        ).subscribe()
-      }
-    });
   }
 
   protected readonly searchArray = searchArray;

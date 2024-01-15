@@ -1,14 +1,19 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
-import {BrandDto} from "../../../../dto/brand.dto";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {Subject, takeUntil} from "rxjs";
-import {BrandService} from "../../services/brand.service";
 import {MatButtonModule} from "@angular/material/button";
 import {AuthService} from "../../../auth/services/auth.service";
 import {NgIf} from "@angular/common";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+
+import {MatIconModule} from "@angular/material/icon";
+import {BrandDto} from "../../../../dto/brand.dto";
+import {BrandService} from "../../services/brand.service";
 import {BrandsModalFormComponent} from "../brands-modal-form/brands-modal-form.component";
+import {
+  ConfirmDeleteModalComponent
+} from "../../../shared/components/confirm-delete-modal/confirm-delete-modal.component";
 
 @Component({
   selector: 'app-brands',
@@ -17,7 +22,8 @@ import {BrandsModalFormComponent} from "../brands-modal-form/brands-modal-form.c
     MatTableModule,
     MatPaginatorModule,
     MatButtonModule,
-    NgIf
+    NgIf,
+    MatIconModule
   ],
   templateUrl: './brands.component.html',
   styleUrl: './brands.component.scss'
@@ -34,15 +40,14 @@ export class BrandsComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(): void {
-    this.brandService.getBrands().pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(res => {
-      this.dataSource = new MatTableDataSource<Pick<BrandDto, "id" | "name" | "icon">>(res.results)
-    })
+      this.updateTableInfo()
 
     this.authService.isAdmin.pipe(
       takeUntil(this.destroy$)
-    ).subscribe(res => this.isAdmin = res)
+    ).subscribe(res => {
+      this.isAdmin = res
+      if (res) this.displayedColumns.push('update', 'delete')
+    })
   }
 
   ngOnDestroy(): void {
@@ -50,11 +55,13 @@ export class BrandsComponent implements OnInit, OnDestroy{
     this.destroy$.unsubscribe()
   }
 
-  openDialog() {
+  openDialog(data?: {id: string; title: string; name: string; icon: string;}) {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-      id: '1',
+    dialogConfig.data = data || {
+      id: '',
       title: 'Добавление нового бренда',
+      name: '',
+      icon: ''
     };
     dialogConfig.width = '350px'
     dialogConfig.height = '350px'
@@ -66,20 +73,46 @@ export class BrandsComponent implements OnInit, OnDestroy{
       takeUntil(this.destroy$)
     ).subscribe(res => {
       if (res) {
-        const brand = {
-          ...res,
-          margin: 0
-        }
-        this.brandService.createBrand(brand).pipe(
-          takeUntil(this.destroy$)
-        ).subscribe(() => {
-          this.brandService.getBrands().pipe(
-            takeUntil(this.destroy$)
-          ).subscribe(res => {
-            this.dataSource = new MatTableDataSource<Pick<BrandDto, "id" | "name" | "icon">>(res.results)
-          })
+        this.updateTableInfo()
+      }
+    })
+  }
+
+  update(data: Pick<BrandDto, "id" | "name" | "icon">): void {
+    const dialogData = {
+      ...data,
+      title: 'Обновление бренда'
+    }
+
+    this.openDialog(dialogData)
+  }
+
+  delete(id: string) : void{
+    const dialogRef = this.dialog.open(ConfirmDeleteModalComponent, {
+      width: '250px',
+      height: '175px',
+      disableClose: true,
+      data: {
+        text: 'Удалить бренд?',
+        confirmText: 'Да',
+        cancelText: 'Нет'
+      }
+    })
+
+    dialogRef.afterClosed().pipe().subscribe((res: boolean) => {
+      if (res) {
+        this.brandService.deleteBrand(id).subscribe(() => {
+          this.updateTableInfo()
         })
       }
     })
+  }
+
+  updateTableInfo(): void {
+      this.brandService.getBrands().pipe(
+          takeUntil(this.destroy$)
+      ).subscribe(res => {
+          this.dataSource = new MatTableDataSource<Pick<BrandDto, "id" | "name" | "icon">>(res.results)
+      })
   }
 }

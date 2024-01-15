@@ -1,20 +1,20 @@
 import {
   AfterViewChecked,
-  AfterViewInit,
   Component,
-  ElementRef,
   EventEmitter,
   Input,
   OnDestroy,
-  OnInit,
   Output,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import {CurrencyPipe, NgIf, NgOptimizedImage} from "@angular/common";
 import {ProductsDto} from "../../../../dto/products.dto";
 import {CartService} from "../../../cart/services/cart.service";
-import {BehaviorSubject, debounceTime, distinctUntilChanged, fromEvent, Subject, switchMap, takeUntil, tap} from "rxjs";
+import {debounceTime, fromEvent, Subject, takeUntil} from "rxjs";
 import {MatButton, MatButtonModule} from "@angular/material/button";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-product-item',
@@ -23,10 +23,13 @@ import {MatButton, MatButtonModule} from "@angular/material/button";
     NgOptimizedImage,
     NgIf,
     CurrencyPipe,
-    MatButtonModule
+    MatButtonModule,
+    MatCheckboxModule,
+    FormsModule
   ],
   templateUrl: './product-item.component.html',
-  styleUrl: './product-item.component.scss'
+  styleUrl: './product-item.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class ProductItemComponent implements OnDestroy, AfterViewChecked{
 
@@ -36,6 +39,7 @@ export class ProductItemComponent implements OnDestroy, AfterViewChecked{
   @Input() cartIdDataBase = ''
 
   @Output() deleteFromCart = new EventEmitter<string>()
+  @Output() addToOffer = new EventEmitter<string>()
 
   destroy$ = new Subject<boolean>()
   isWaitServer = false
