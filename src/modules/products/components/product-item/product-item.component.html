@@ -1,0 +1,30 @@
+<div class="product-card">
+  <div class="image">
+    <img ngSrc="assets/images/defaultImg.jpg" alt="" height="200" width="183" priority="">
+  </div>
+  <div class="info">
+    <div class="name">
+      {{product.name}}
+    </div>
+    <div class="description">{{product.description}}
+    </div>
+    <div class="brand">
+      <p>Производитель: {{product.brand.name}}</p>
+      <img ngSrc="assets/icons/apple.png" alt="" height="16" width="16">
+    </div>
+    <div class="buy">
+      <p class="price">{{product.price | currency: 'RUB' : 'symbol' : '' : 'ru'}}</p>
+      <button *ngIf="product.is_ready && !isCart && !isFromProduct" (click)="addCart(product.id)" mat-raised-button color="accent">В корзину</button>
+      <button *ngIf="!product.is_ready && !isCart && !isFromProduct" mat-raised-button [disabled]="true">Нет в наличии</button>
+      <button *ngIf="isCart" (click)="deleteFromCart.emit(cartIdDataBase)" mat-raised-button color="accent">
+        <p class="delete-text">Удалить из корзины</p>
+        <img class="delete-icon" ngSrc="assets/icons/trash.svg" alt="" height="16" width="14">
+      </button>
+    </div>
+    <div *ngIf="isCart || isFromProduct" class="quantity">
+      <button #minusBtn class="change" mat-raised-button color="accent"  [disabled]="isWaitServer">-</button>
+      <div class="count">{{quantity}}</div>
+      <button #plusBtn class="change" mat-raised-button color="accent"  [disabled]="isWaitServer">+</button>
+    </div>
+  </div>
+</div>

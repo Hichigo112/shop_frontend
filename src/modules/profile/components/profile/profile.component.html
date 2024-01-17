@@ -1,0 +1,20 @@
+<div class="container" *ngIf="userData">
+  <form [formGroup]="form" class="form">
+    <div class="input-container">
+      <input formControlName="username" placeholder="Имя" [class]="{input: true, error: username?.hasError('required') || username?.hasError('busy')}">
+      <p class="error-mess" *ngIf="username?.hasError('required')">Поле является обязательным</p>
+      <p class="error-mess" *ngIf="username?.hasError('busy')">Данное имя уже занято</p>
+    </div>
+    <div class="input-container">
+      <input formControlName="email" placeholder="Электронная почта" [class]="{input: true, error: email?.hasError('email')}">
+      <p class="error-mess" *ngIf="email?.hasError('email')">Неверный формат почты</p>
+    </div>
+    <div class="input-container">
+      <input formControlName="phone" placeholder="Телефон" class="input">
+    </div>
+    <div class="actions">
+      <button mat-raised-button color="primary" (click)="sendChanges()">Сохранить изменения</button>
+      <button mat-raised-button color="accent" (click)="resetForm()">Сбросить изменения</button>
+    </div>
+  </form>
+</div>

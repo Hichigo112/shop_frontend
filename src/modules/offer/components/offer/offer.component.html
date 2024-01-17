@@ -1,0 +1,41 @@
+<div class="container">
+
+  <div class="wrapper" [formGroup]="form">
+    <h2>Оформление заказа</h2>
+    <mat-form-field color="primary">
+      <mat-label>Введите промокод</mat-label>
+      <input type="text" matInput placeholder="промокод" formControlName="promocode">
+      <mat-error *ngIf="form.get('promocode')?.hasError('expired')">Промокод не существует</mat-error>
+    </mat-form-field>
+    <mat-form-field color="primary">
+      <mat-select placeholder="Выберите способ оплаты" formControlName="payment_method">
+        <ng-container *ngFor="let payData of paymentMethod">
+          <mat-option [value]="payData">{{payData}}</mat-option>
+        </ng-container>
+      </mat-select>
+      <mat-error *ngIf="form.get('payment_method')?.hasError('required')">Это поле является обязательным</mat-error>
+    </mat-form-field>
+    <mat-form-field color="primary">
+      <mat-select placeholder="Выберите способ доставки" formControlName="delivery_method">
+        <ng-container *ngFor="let deliveryData of deliveryMethod">
+          <mat-option [value]="deliveryData">{{deliveryData}}</mat-option>
+        </ng-container>
+
+      </mat-select>
+      <mat-error *ngIf="form.get('delivery_method')?.hasError('required')">Это поле является обязательным</mat-error>
+    </mat-form-field>
+    <mat-form-field color="primary" *ngIf="isDeliveryHome" >
+      <mat-label>Введите адресс дома</mat-label>
+      <input type="text" matInput placeholder="адресс" [errorStateMatcher]="errorMatcher" formControlName="delivery_address">
+    </mat-form-field>
+    <mat-form-field color="primary">
+      <mat-select placeholder="Выберите город склада" formControlName="delivery_warehouse">
+        <ng-container *ngFor="let wareHouse of wareHouses">
+          <mat-option [value]="wareHouse.id">{{wareHouse.name}}</mat-option>
+        </ng-container>
+      </mat-select>
+      <mat-error *ngIf="form.get('delivery_warehouse')?.hasError('required')">Это поле является обязательным</mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit" (click)="submit()">Оформить заказ</button>
+  </div>
+</div>

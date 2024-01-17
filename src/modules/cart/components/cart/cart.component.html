@@ -1,0 +1,21 @@
+<div class="cart-container">
+  <div class="product-wrapper">
+    <ng-container *ngFor="let productItem of (cartItems | async)">
+      <app-product-item
+              [product]="productItem.product"
+              [isCart]="true"
+              [quantity]="productItem.quantity"
+              [cartIdDataBase]="productItem.id"
+              (deleteFromCart)="onDeleteCartItem($event)"
+      ></app-product-item>
+    </ng-container>
+  </div>
+  <div class="offer" *ngIf="cartItems.getValue().length">
+    <p>Ориентир доставки 5-8 рабочий дней. Хотите заказать прямо сейчас?</p>
+    <button (click)="createOffer()" mat-raised-button color="primary">Заказать сейчас</button>
+  </div>
+</div>
+<app-pagination [count]="count" [next]="next" [previous]="previous" *ngIf="(cartItems.getValue().length)"></app-pagination>
+<div *ngIf="cartMessage">
+  <h1>{{cartMessage}}</h1>
+</div>

@@ -1,0 +1,15 @@
+<div class="container">
+  <div class="filters">
+    <div *ngFor="let searchItem of searchArray">
+      <p>{{searchItem.placeHolder}}</p>
+      <app-search [placeHolder]="searchItem.placeHolder" [nameFilter]="searchItem.nameFilter" [inputQueryParams]="searchItem.inputQueryParams"></app-search>
+    </div>
+    <button mat-raised-button color="primary" (click)="openDialog()" *ngIf="isAdmin">Добавить продукт</button>
+  </div>
+  <div class="products-container">
+    <ng-container *ngFor="let product of (productItems | async)">
+      <app-product-item [product]="product"></app-product-item>
+    </ng-container>
+  </div>
+  <app-pagination [count]="count" [next]="next" [previous]="previous" queryParamsHandling="merge"></app-pagination>
+</div>
