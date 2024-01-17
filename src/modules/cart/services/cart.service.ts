@@ -3,14 +3,14 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {DEV_URL} from "../../../constants/url";
 import {PaginationDto} from "../../../dto/pagination.dto";
-import {AddProduct, CartDto, ResAddProduct} from "../../../dto/cart.dto";
+import {AddProduct, CartDto, CartItem, ResAddProduct} from "../../../dto/cart.dto";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
   private cartId = ''
-
+  cartItems: CartItem[] = []
   constructor(private http: HttpClient) { }
 
   getCartData(params: HttpParams | {}): Observable<PaginationDto<CartDto>> {

@@ -1,11 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router, RouterOutlet} from "@angular/router";
 import {CartItem} from "../../../../dto/cart.dto";
 import {BehaviorSubject, Subject, takeUntil} from "rxjs";
 import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
 import {ProductItemComponent} from "../../../products/components/product-item/product-item.component";
 import {CartService} from "../../services/cart.service";
 import {PaginationComponent} from "../../../shared/components/pagination/pagination.component";
+import {MatButtonModule} from "@angular/material/button";
 
 @Component({
   selector: 'app-cart',
@@ -15,7 +16,9 @@ import {PaginationComponent} from "../../../shared/components/pagination/paginat
     AsyncPipe,
     ProductItemComponent,
     NgIf,
-    PaginationComponent
+    PaginationComponent,
+    RouterOutlet,
+    MatButtonModule
   ],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss'
@@ -28,7 +31,7 @@ export class CartComponent implements OnInit, OnDestroy{
   previous = ''
 
   destroy$ = new Subject<boolean>();
-  constructor(private route: ActivatedRoute, private cartService: CartService) {
+  constructor(private route: ActivatedRoute, private cartService: CartService, private router: Router) {
   }
   ngOnInit(): void {
     this.route.data.pipe(
@@ -49,6 +52,7 @@ export class CartComponent implements OnInit, OnDestroy{
       this.cartService.getCartData(res).pipe(
         takeUntil(this.destroy$)
       ).subscribe(res => {
+        this.cartService.cartItems = res.results[0].items
         this.cartItems.next(res.results[0].items)
       })
     })
@@ -69,5 +73,9 @@ export class CartComponent implements OnInit, OnDestroy{
   ngOnDestroy(): void {
     this.destroy$.next(true)
     this.destroy$.unsubscribe()
+  }
+
+  createOffer() {
+    this.router.navigate(['offer'])
   }
 }

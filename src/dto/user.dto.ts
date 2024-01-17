@@ -11,6 +11,8 @@ export interface LongUserDto extends ShortUserDto{
   phone?: string;
 }
 
+export type UserTableDto = Required<Pick<LongUserDto, 'id' | 'email' | 'phone' | 'username'>>
+
 export interface UserToken {
   auth_token: string;
 }

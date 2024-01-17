@@ -1,0 +1,53 @@
+<div *ngIf="detailInfo; else error">
+  <div class="container">
+    Заказ состоит из одного и более товаров. <br>Краткая информация по каждому из них
+    <ng-container *ngFor="let offerItem of detailInfo.offer.items">
+      <div class="info">
+        <p>Количество товаров - {{offerItem.quantity}}</p>
+        <p>Название - {{offerItem.product.name}}</p>
+        <p>Цена за 1шт - {{offerItem.product.price}}</p>
+        <p>Персональный номер оффера - <strong>{{offerItem.offer}}</strong></p>
+        <p>Местонахождение товара - {{offerItem.warehouse.name}}</p>
+      </div>
+    </ng-container>
+  </div>
+  <div class="container">
+    Итоговая информация по заказу
+    <div class="info">
+      <p>Метод доставки - {{detailInfo.offer.delivery_method}}</p>
+      <p>Адрес доставки - {{detailInfo.offer.delivery_warehouse.city.name}}</p>
+      <p>Сумма без скидки - {{detailInfo.offer.total}}</p>
+      <p>Сумма с учётом скидки - <strong>{{detailInfo.offer.total_with_discount}}</strong></p>
+      <p>Статус заказа - {{detailInfo.offer.is_active | toText: 'Активный' : 'Приостановлен'}}</p>
+      <p>Дата создания заказа - {{detailInfo.offer.created_at | date: 'MMMM, dd, y' : '' : 'ru'}}</p>
+    </div>
+  </div>
+  <form [formGroup]="form" class="form">
+    <select formControlName="is_paid">
+      <ng-container *ngFor="let paid of paidSelect">
+        <option [value]="paid.trust" [selected]="paid.trust === form.get('is_paid')?.value">{{paid.text}}</option>
+      </ng-container>
+    </select>
+
+    <select formControlName="is_viewed_by_admin">
+      <ng-container *ngFor="let viewed of viewedSelect">
+        <option [value]="viewed.trust" [selected]="viewed.trust === form.get('is_viewed_by_admin')?.value">{{viewed.text}}</option>
+      </ng-container>
+    </select>
+
+    <select formControlName="status">
+      <ng-container *ngFor="let status of statusSelect">
+        <option [value]="status" [selected]="status === form.get('status')?.value">{{status}}</option>
+      </ng-container>
+    </select>
+
+    <button (click)="save()">Сохранить изменения</button>
+    <button (click)="reset()">Сбросить изменения</button>
+  </form>
+</div>
+
+<ng-template #error>
+  <div>
+    <h1>Такого заказа не существует</h1>
+  </div>
+</ng-template>

@@ -3,7 +3,9 @@
     <a class="link" routerLink="products" routerLinkActive="link-active">Главная</a>
     <a class="link" routerLink="clients" routerLinkActive="link-active">Клиенты</a>
     <a class="link" routerLink="brands" routerLinkActive="link-active">Бренды</a>
-    <a class="link" routerLink="orders" routerLinkActive="link-active">Заказы</a>
+    <a class="link" routerLink="orders" *ngIf="isAdmin" routerLinkActive="link-active">Заказы</a>
+    <a class="link" routerLink="promocode" *ngIf="isAdmin" routerLinkActive="link-active">Промокоды</a>
+    <a class="link" routerLink="users" *ngIf="isAdmin" routerLinkActive="link-active">Пользователи</a>
   </div>
   <div class="other-links">
     <button *ngIf="isAuthUser; else login" (click)="logout()" mat-raised-button color="accent">Выход</button>
@@ -11,6 +13,7 @@
       <button (click)="loginPage()" mat-raised-button color="accent">Вход</button>
     </ng-template>
     <img routerLink="cart" ngSrc="assets/icons/cart.svg" height="30" width="30" alt="">
+    <img routerLink="profile" ngSrc="assets/icons/profile.svg" height="25" width="25" alt="">
   </div>
 </nav>
 <router-outlet></router-outlet>

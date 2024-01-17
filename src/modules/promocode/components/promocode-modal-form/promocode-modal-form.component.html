@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>{{title}}</h2>
+
+<mat-dialog-content [formGroup]="form">
+  <mat-form-field>
+    <input matInput
+           placeholder="Введите название промокода"
+           formControlName="code">
+    <mat-error *ngIf="form.get('code')?.hasError('required')">Это поле обязательное</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput
+           placeholder="Введите размер скидки"
+           formControlName="discount">
+    <mat-error *ngIf="form.get('discount')?.hasError('required')">Это поле обязательное</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput
+           placeholder="Введите тип"
+           formControlName="type">
+    <mat-error *ngIf="form.get('discount')?.hasError('required')">Это поле обязательное</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select placeholder="Выберите город склада" formControlName="is_active">
+      <ng-container *ngFor="let activeName of active">
+        <mat-option [value]="activeName.result">{{activeName.is_active}}</mat-option>
+      </ng-container>
+    </mat-select>
+    <mat-error *ngIf="form.get('is_active')?.hasError('required')">Это поле является обязательным</mat-error>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="save()">Сохранить</button>
+  <button mat-raised-button color="accent"  (click)="close()">Закрыть</button>
+</mat-dialog-actions>
